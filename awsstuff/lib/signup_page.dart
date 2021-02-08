@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'auth_credentials.dart';
 
 class SignUpPage extends StatefulWidget {
+
+  final ValueChanged<SignUpCredentials> didProvideCredentials;
+
+  final VoidCallback shouldShowLogin;
+
+  SignUpPage({Key key, this.didProvideCredentials, this.shouldShowLogin}) : super(key: key);
+
   @override 
   State<StatefulWidget> createState() => _SignUpPageState();
 }
@@ -23,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Container(
             alignment: Alignment.bottomCenter,
             child: TextButton(
-              onPressed: () {},
+              onPressed: widget.shouldShowLogin,
               child: Text('Already have an account? Login.')),
             )
         ])),
@@ -75,5 +83,8 @@ class _SignUpPageState extends State<SignUpPage> {
     print('username: $username');
     print('email: $email');
     print('password: $password');
+
+    final credentials = SignUpCredentials(username: username, email: email, password: password);
+    widget.didProvideCredentials(credentials);
   }
 } 
