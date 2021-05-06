@@ -86,11 +86,17 @@ class _HomePageState extends State<HomePage> {
                         );
                       });
                 },
+                child: Padding(
+                  padding: const EdgeInsets.all(35.0),
                 child: new Text(
                   'Inspire Me',
                   style: new TextStyle(fontSize: 16.0, color: Colors.black),
                 ),
+                ),
               ),
+            ),
+            Padding(
+                  padding: const EdgeInsets.all(10.0),
             ),
             FutureBuilder<List<SubGoal>>(
                 future: goalManager.retrieveSubGoalsForToday(),

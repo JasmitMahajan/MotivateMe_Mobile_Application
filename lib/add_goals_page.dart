@@ -72,6 +72,14 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               tileMode:
                   TileMode.repeated, // repeats the gradient over the canvas
             ),
+            boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.9),
+                  spreadRadius: 4,
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
+                )
+            ]
           ),
           child: Center(
             child: Container(
@@ -99,13 +107,13 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.tealAccent),
                         elevation: MaterialStateProperty.all<double>(10.0),
-                        side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(width: 3.0, color: Colors.black),
-                        ),
+                        //side: MaterialStateProperty.all<BorderSide>(
+                          //BorderSide(width: 3.0, color: Colors.black),
+                        //),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
-                            side: BorderSide(width: 3, color: Colors.black),
+                            //side: BorderSide(width: 3, color: Colors.black),
                           ),
                         ),
                       ),
@@ -145,7 +153,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       Row(
         children: [
           Flexible(child: Text("Start Date: ")),
-          Flexible(
+          Expanded(
             child: DateTimeField(
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
@@ -162,7 +170,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             ),
           ),
           Flexible(child: Text("End Date: ")),
-          Flexible(
+          Expanded(
             child: DateTimeField(
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
@@ -186,7 +194,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       Row(
         children: [
           Flexible(child: Text("Start Time: ")),
-          Flexible(
+          Expanded(
             child: DateTimeField(
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
@@ -203,7 +211,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             ),
           ),
           Flexible(child: Text("End Time: ")),
-          Flexible(
+          Expanded(
             child: DateTimeField(
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
@@ -239,6 +247,14 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               tileMode:
                   TileMode.repeated, // repeats the gradient over the canvas
             ),
+            boxShadow: [
+                BoxShadow(
+                  color: Colors.pink.withOpacity(0.2),
+                  spreadRadius: 4,
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
+                )
+            ]
           ),
           onSelect: (values) {
             // <== Callback to handle the selected days
