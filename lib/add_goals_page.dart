@@ -85,41 +85,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 )
             ]
           ),
-<<<<<<< HEAD
-          child: Center(
-            child: Container(
-                child: Stack(children: [
-              SingleChildScrollView(
-                padding: EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                child: Column(children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    autovalidateMode: _autoValidate,
-                    child: _addGoalForm(),
-                  ),
-                  SizedBox(height: 40.0),
-                  SizedBox(
-                    width: 300.0,
-                    height: 40.0,
-                    child: OutlinedButton(
-                      child: new Text(
-                        'Add',
-                        style:
-                            new TextStyle(fontSize: 17.0, color: Colors.black),
-                      ),
-                      onPressed: _validateInputs,
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.tealAccent),
-                        elevation: MaterialStateProperty.all<double>(10.0),
-                        //side: MaterialStateProperty.all<BorderSide>(
-                          //BorderSide(width: 3.0, color: Colors.black),
-                        //),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                            //side: BorderSide(width: 3, color: Colors.black),
-=======
           child: Container(
               height: MediaQuery.of(context).size.height,
               child: Stack(children: [
@@ -159,7 +124,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32.0),
                             ),
->>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
                           ),
                         ),
                       ),
@@ -195,14 +159,8 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         padding: const EdgeInsets.all(10.0),
       ),
       Row(
-<<<<<<< HEAD
-        children: [
-          Flexible(child: Text("Start Date: ")),
-          Expanded(
-=======
         children: <Widget>[
           Flexible(
->>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
               decoration: InputDecoration(
                   labelText: "Start Date",
@@ -223,15 +181,10 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               },
             ),
           ),
-<<<<<<< HEAD
-          Flexible(child: Text("End Date: ")),
-          Expanded(
-=======
           SizedBox(
             width: 20.0,
           ),
           Flexible(
->>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
               decoration: InputDecoration(
                   labelText: "End Date",
@@ -261,12 +214,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       ),
       Row(
         children: [
-<<<<<<< HEAD
-          Flexible(child: Text("Start Time: ")),
-          Expanded(
-=======
           Flexible(
->>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
               decoration: InputDecoration(
                   labelText: "Start Time",
