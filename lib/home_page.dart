@@ -326,61 +326,76 @@ class _HomePageState extends State<HomePage> {
                     AsyncSnapshot<List<SubGoal>> snapshot) {
                   if (snapshot.hasData) {
                     List<SubGoal> subGoals = snapshot.data;
-                    return ListView.builder(
-                      // physics: const AlwaysScrollableScrollPhysics(),
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: subGoals.length,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      itemBuilder: (BuildContext context, int index) {
-                        print(index.toString() +
-                            " " +
-                            subGoals.elementAt(index).startDate.toString());
-                        return Dismissible(
-                          child: SubGoalWidget(
-                              subgoal: subGoals.elementAt(index),
-                              title: subGoals.elementAt(index).title,
-                              description:
-                                  subGoals.elementAt(index).description,
-                              callback: this.callback),
-                          background: Container(
-                              height: 50,
-                              width: 50,
-                              padding: EdgeInsets.only(left: 60.0),
-                              alignment: Alignment.centerLeft,
-                              color: Colors.green,
-                              child: Icon(Icons.check,
-                                  color: Colors.white, size: 50)),
-                          secondaryBackground: Container(
-                              height: 50,
-                              width: 50,
-                              padding: EdgeInsets.only(right: 60.0),
-                              alignment: Alignment.centerRight,
-                              color: Colors.red,
-                              child: Icon(Icons.clear,
-                                  color: Colors.white, size: 50)),
-                          key: UniqueKey(),
-                          onDismissed: (DismissDirection direction) {
-                            var markedSubGoal = subGoals.elementAt(index);
+                    if (subGoals.length == 0) {
+                      return Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Column(children: [
+                            Text("All done with goals for today!",
+                                style: TextStyle(fontSize: 15.0),
+                                textAlign: TextAlign.center),
+                            SizedBox(height: 20.0),
+                            Text(
+                                '...Unless you want to make more goals ☆⌒(≧▽​° )',
+                                style: TextStyle(fontSize: 15.0),
+                                textAlign: TextAlign.center),
+                          ]));
+                    } else {
+                      return ListView.builder(
+                        // physics: const AlwaysScrollableScrollPhysics(),
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: subGoals.length,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        itemBuilder: (BuildContext context, int index) {
+                          print(index.toString() +
+                              " " +
+                              subGoals.elementAt(index).startDate.toString());
+                          return Dismissible(
+                            child: SubGoalWidget(
+                                subgoal: subGoals.elementAt(index),
+                                title: subGoals.elementAt(index).title,
+                                description:
+                                    subGoals.elementAt(index).description,
+                                callback: this.callback),
+                            background: Container(
+                                height: 50,
+                                width: 50,
+                                padding: EdgeInsets.only(left: 60.0),
+                                alignment: Alignment.centerLeft,
+                                color: Colors.green,
+                                child: Icon(Icons.check,
+                                    color: Colors.white, size: 50)),
+                            secondaryBackground: Container(
+                                height: 50,
+                                width: 50,
+                                padding: EdgeInsets.only(right: 60.0),
+                                alignment: Alignment.centerRight,
+                                color: Colors.red,
+                                child: Icon(Icons.clear,
+                                    color: Colors.white, size: 50)),
+                            key: UniqueKey(),
+                            onDismissed: (DismissDirection direction) {
+                              var markedSubGoal = subGoals.elementAt(index);
 
-                            if (direction == DismissDirection.startToEnd) {
-                              removeSubGoal(subGoals, index, true);
-                              setState(() {
+                              if (direction == DismissDirection.startToEnd) {
                                 removeSubGoal(subGoals, index, true);
-                              });
-                              completedGoals(markedSubGoal);
-                            }
-                            if (direction == DismissDirection.endToStart) {
-                              removeSubGoal(subGoals, index, false);
-                              setState(() {
+                                setState(() {
+                                  removeSubGoal(subGoals, index, true);
+                                });
+                                completedGoals(markedSubGoal);
+                              }
+                              if (direction == DismissDirection.endToStart) {
                                 removeSubGoal(subGoals, index, false);
-                              });
-                              incompleteGoals(markedSubGoal);
-                            }
-                          },
-                        );
-                      },
-                    );
+                                setState(() {
+                                  removeSubGoal(subGoals, index, false);
+                                });
+                                incompleteGoals(markedSubGoal);
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
                   } else {
                     return Center(
                       child: CircularProgressIndicator(

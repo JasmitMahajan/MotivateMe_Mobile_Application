@@ -331,12 +331,16 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
 
   void _validateInputs() async {
     if (_formKey.currentState.validate()) {
+      if (this.endDate.isBefore(this.startDate)) {
+        _showInvalidEndDateDialog();
+      }
       var goalTitles = await goalManager.retrieveGoalTitles();
       if (goalTitles.contains(_goalTitleController.text)) {
         _goalExistsDialog();
         return;
       }
 
+      /*
       for (var entry in goalDays.entries) {
         if (entry.value == true) {
           _addGoal();
@@ -344,7 +348,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
           return;
         }
       }
-      _showMyDialog();
+      _showMyDialog(); */
     } else {
       setState(() {
         _autoValidate = AutovalidateMode.onUserInteraction;
@@ -385,6 +389,33 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     );
     await goalManager.insertGoal(goal);
     print('success!');
+  }
+
+  Future<void> _showInvalidEndDateDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('End Date Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('The End Date must be after Start Date'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _showMyDialog() async {

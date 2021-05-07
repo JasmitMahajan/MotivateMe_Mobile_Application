@@ -43,7 +43,18 @@ class CollagePageState extends State<CollagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+              appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
+          )),
+        ),
+      ),
         body: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
