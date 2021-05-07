@@ -26,6 +26,12 @@ class _HomePageState extends State<HomePage> {
 
   final GoalManager goalManager = GoalManager();
 
+  callback(newValue) {
+    if (newValue == true) {
+      setState(() {});
+    }
+  }
+
   Future<void> removeSubGoal(
       List<SubGoal> subGoals, int index, bool completed) async {
     Future.delayed(Duration(milliseconds: 500)).then((_) {
@@ -78,158 +84,187 @@ class _HomePageState extends State<HomePage> {
           child: Center(
               child: Column(children: [
             Padding(padding: EdgeInsets.only(top: 55.0)),
-            FutureBuilder(
-                future: Amplify.Auth.fetchUserAttributes(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<AuthUserAttribute> firstName = snapshot.data
-                        .where((element) =>
-                            element.userAttributeKey == 'custom:first_name')
-                        .toList();
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
+                Widget>[
+              Container(
+                alignment: Alignment.topRight,
+                width: 58.75,
+                height: 62.75,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('icon/motivatemelogo.png'),
+                    fit: BoxFit.fill,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              SizedBox(
+                width: 80,
+              ),
+              Container(
+                  alignment: Alignment.topLeft,
+                  child: FutureBuilder(
+                      future: Amplify.Auth.fetchUserAttributes(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<AuthUserAttribute> firstName = snapshot.data
+                              .where((element) =>
+                                  element.userAttributeKey ==
+                                  'custom:first_name')
+                              .toList();
 
-                    DateTime now = DateTime.now();
-                    String currentMonth = DateTime.now().month.toString();
-                    String currentDay = DateTime.now().day.toString();
+                          DateTime now = DateTime.now();
+                          String currentMonth = DateTime.now().month.toString();
+                          String currentDay = DateTime.now().day.toString();
 
-                    if (int.parse(currentMonth) < 10) {
-                      currentMonth = '0' + DateTime.now().month.toString();
-                    }
-                    if (int.parse(currentDay) < 10) {
-                      currentDay = '0' + DateTime.now().day.toString();
-                    }
+                          if (int.parse(currentMonth) < 10) {
+                            currentMonth =
+                                '0' + DateTime.now().month.toString();
+                          }
+                          if (int.parse(currentDay) < 10) {
+                            currentDay = '0' + DateTime.now().day.toString();
+                          }
 
-                    String currentDate = DateTime.now().year.toString() +
-                        '-' +
-                        currentMonth +
-                        '-' +
-                        currentDay;
+                          String currentDate = DateTime.now().year.toString() +
+                              '-' +
+                              currentMonth +
+                              '-' +
+                              currentDay;
 
-                    DateTime afternoon =
-                        DateTime.parse(currentDate + ' 12:00:00');
-                    DateTime evening =
-                        DateTime.parse(currentDate + ' 17:00:00');
-                    DateTime night = DateTime.parse(currentDate + ' 20:00:00');
+                          DateTime afternoon =
+                              DateTime.parse(currentDate + ' 12:00:00');
+                          DateTime evening =
+                              DateTime.parse(currentDate + ' 17:00:00');
+                          DateTime night =
+                              DateTime.parse(currentDate + ' 20:00:00');
 
-                    if (firstName.isEmpty) {
-                      if (now.isBefore(afternoon)) {
-                        return Text('Good Morning!',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ));
-                      } else if (now.isAfter(afternoon) &&
-                          now.isBefore(evening)) {
-                        return Text('Good Afternoon!',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ));
-                      } else if (now.isAfter(evening) && now.isBefore(night)) {
-                        return Text('Good Evening!',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ));
-                      } else {
-                        return Text('Good Night!',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ));
-                      }
-                    }
+                          if (firstName.isEmpty) {
+                            if (now.isBefore(afternoon)) {
+                              return Text('Good Morning!',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ));
+                            } else if (now.isAfter(afternoon) &&
+                                now.isBefore(evening)) {
+                              return Text('Good Afternoon!',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ));
+                            } else if (now.isAfter(evening) &&
+                                now.isBefore(night)) {
+                              return Text('Good Evening!',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ));
+                            } else {
+                              return Text('Good Night!',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ));
+                            }
+                          }
 
-                    if (now.isBefore(afternoon)) {
-                      return Text(
-                          'Good Morning ' +
-                              firstName.first.value.toString() +
-                              '!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    } else if (now.isAfter(afternoon) &&
-                        now.isBefore(evening)) {
-                      return Text(
-                          'Good Afternoon ' +
-                              firstName.first.value.toString() +
-                              '!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    } else if (now.isAfter(evening) && now.isBefore(night)) {
-                      return Text(
-                          'Good Evening ' +
-                              firstName.first.value.toString() +
-                              '!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    } else {
-                      return Text(
-                          'Good Night ' +
-                              firstName.first.value.toString() +
-                              '!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    }
-                  } else {
-                    DateTime now = DateTime.now();
-                    String currentMonth = DateTime.now().month.toString();
-                    String currentDay = DateTime.now().day.toString();
+                          if (now.isBefore(afternoon)) {
+                            return Text(
+                                'Good Morning ' +
+                                    firstName.first.value.toString() +
+                                    '!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          } else if (now.isAfter(afternoon) &&
+                              now.isBefore(evening)) {
+                            return Text(
+                                'Good Afternoon ' +
+                                    firstName.first.value.toString() +
+                                    '!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          } else if (now.isAfter(evening) &&
+                              now.isBefore(night)) {
+                            return Text(
+                                'Good Evening ' +
+                                    firstName.first.value.toString() +
+                                    '!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          } else {
+                            return Text(
+                                'Good Night ' +
+                                    firstName.first.value.toString() +
+                                    '!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          }
+                        } else {
+                          DateTime now = DateTime.now();
+                          String currentMonth = DateTime.now().month.toString();
+                          String currentDay = DateTime.now().day.toString();
 
-                    if (int.parse(currentMonth) < 10) {
-                      currentMonth = '0' + DateTime.now().month.toString();
-                    }
-                    if (int.parse(currentDay) < 10) {
-                      currentDay = '0' + DateTime.now().day.toString();
-                    }
+                          if (int.parse(currentMonth) < 10) {
+                            currentMonth =
+                                '0' + DateTime.now().month.toString();
+                          }
+                          if (int.parse(currentDay) < 10) {
+                            currentDay = '0' + DateTime.now().day.toString();
+                          }
 
-                    String currentDate = DateTime.now().year.toString() +
-                        '-' +
-                        currentMonth +
-                        '-' +
-                        currentDay;
+                          String currentDate = DateTime.now().year.toString() +
+                              '-' +
+                              currentMonth +
+                              '-' +
+                              currentDay;
 
-                    DateTime afternoon =
-                        DateTime.parse(currentDate + ' 12:00:00');
-                    DateTime evening =
-                        DateTime.parse(currentDate + ' 17:00:00');
-                    DateTime night = DateTime.parse(currentDate + ' 20:00:00');
+                          DateTime afternoon =
+                              DateTime.parse(currentDate + ' 12:00:00');
+                          DateTime evening =
+                              DateTime.parse(currentDate + ' 17:00:00');
+                          DateTime night =
+                              DateTime.parse(currentDate + ' 20:00:00');
 
-                    if (now.isBefore(afternoon)) {
-                      return Text('Good Morning!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    } else if (now.isAfter(afternoon) && now.isBefore(night)) {
-                      return Text('Good Afternoon!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    } else if (now.isAfter(evening) && now.isBefore(night)) {
-                      return Text(
-                        'Good Evening!',
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    } else {
-                      return Text('Good Night!',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ));
-                    }
-                  }
-                }),
+                          if (now.isBefore(afternoon)) {
+                            return Text('Good Morning!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          } else if (now.isAfter(afternoon) &&
+                              now.isBefore(night)) {
+                            return Text('Good Afternoon!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          } else if (now.isAfter(evening) &&
+                              now.isBefore(night)) {
+                            return Text(
+                              'Good Evening!',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          } else {
+                            return Text('Good Night!',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ));
+                          }
+                        }
+                      })),
+            ]),
             Container(
               padding: EdgeInsets.only(top: 10.0),
               alignment: Alignment.topCenter,
@@ -257,10 +292,15 @@ class _HomePageState extends State<HomePage> {
                           );
                         });
                   },
-                  child: new Text(
-                    'Inspire Me',
-                    style: new TextStyle(fontSize: 16.0, color: Colors.black),
-                  ),
+                  child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Inspire Me',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      )),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Color(0xfff5855b)),
@@ -301,7 +341,8 @@ class _HomePageState extends State<HomePage> {
                               subgoal: subGoals.elementAt(index),
                               title: subGoals.elementAt(index).title,
                               description:
-                                  subGoals.elementAt(index).description),
+                                  subGoals.elementAt(index).description,
+                              callback: this.callback),
                           background: Container(
                               height: 50,
                               width: 50,

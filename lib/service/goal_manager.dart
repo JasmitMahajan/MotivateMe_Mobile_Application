@@ -42,6 +42,7 @@ class GoalManager {
     await initializeGoalDates(goal);
   }
 
+
   Future<void> initializeGoalDates(Goal goal) async {
     final Future<Database> database =
         openDatabase(join(await getDatabasesPath(), 'motivate_me.db'));
@@ -348,10 +349,10 @@ class GoalManager {
     final Database db = await database;
     String findGoalTitleQuery =
         'SELECT title FROM Goals WHERE id = ' + subgoal.id.toString();
-    List<Map<String, Object>> title = await db.query(findGoalTitleQuery);
+    List<Map<String, Object>> title = await db.rawQuery(findGoalTitleQuery);
     String formattedGoalTitle =
         title.first['title'].toString().replaceAll(' ', '_');
-    String deleteGoalTable = 'DROP TABLE ' + formattedGoalTitle;
+    String deleteGoalTable = 'DROP TABLE IF EXISTS ' + formattedGoalTitle;
     String deleteGoalQuery =
         'DELETE FROM Goals WHERE id = ' + subgoal.id.toString();
     db.execute(deleteGoalQuery);
@@ -442,5 +443,17 @@ class GoalManager {
       }
     }
     return goalTitles;
+  }
+
+  Future<void> updateGoal(Goal goal) async {
+    final Future<Database> database =
+        openDatabase(join(await getDatabasesPath(), 'motivate_me.db'));
+    final Database db = await database;
+    db.update('Goals', goal.formatForDatabase(),
+        where: 'id = ?', whereArgs: [goal.id]);
+    String formattedGoalTitle = goal.title.toString().replaceAll(' ', '_');
+    db.execute('DROP TABLE IF EXISTS ' + formattedGoalTitle);
+    createGoalTable(goal);
+    initializeGoalDates(goal);
   }
 }

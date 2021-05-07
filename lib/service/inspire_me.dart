@@ -6,7 +6,7 @@ class InspireMeService {
   Future<String> inspireMe() async {
     Random random = Random();
     try {
-      var picture = random.nextInt(4);
+      var picture = random.nextInt(7);
       GetUrlResult result =
           await Amplify.Storage.getUrl(key: picture.toString());
       return result.url;

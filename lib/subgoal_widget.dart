@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:motivateme_mobile_app/edit_goal_page.dart';
 import 'package:motivateme_mobile_app/model/subgoal.dart';
 
-import 'model/goal.dart';
-
 // represents a subgoal widget
 class SubGoalWidget extends StatefulWidget {
   final SubGoal subgoal;
   final String title;
   final String description;
-  SubGoalWidget({Key key, this.subgoal, this.title, this.description})
+  final Function callback;
+  SubGoalWidget({Key key, this.subgoal, this.title, this.description, this.callback})
       : super(key: key);
 
   @override
@@ -17,6 +16,7 @@ class SubGoalWidget extends StatefulWidget {
 }
 
 class SubGoalWidgetState extends State<SubGoalWidget> {
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -48,7 +48,6 @@ class SubGoalWidgetState extends State<SubGoalWidget> {
                 child: TextButton(
                     child: Text('Edit'),
                     onPressed: () {
-                      print(widget.title);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -56,7 +55,16 @@ class SubGoalWidgetState extends State<SubGoalWidget> {
                                     subGoal: widget.subgoal,
                                     title: widget.title,
                                     description: widget.description,
-                                  )));
+                                  ))).then((value) {
+                                    print('returning to subgoalwidget!: ' + value.toString());
+                                    if(value) {
+                                      setState(() {
+
+                                      });
+                                      widget.callback(true);
+
+                                    }
+                                  }); 
                     })),
 
           ),

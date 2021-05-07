@@ -44,8 +44,8 @@ class CollagePageState extends State<CollagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: SafeArea(
-            child: Container(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -125,13 +125,18 @@ class CollagePageState extends State<CollagePage> {
                                         top: 10.0, bottom: 10.0)),
                                 completedGoalsToDisplay.length == 0 &&
                                         incompleteGoalsToDisplay.length == 0
-                                    ? Text(
-                                        'Nothing to see here 	╮(￣ω￣;)╭',
-                                        style: TextStyle(
-                                            fontSize: 25.0,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      )
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        child: Text(
+                                          'Nothing to see here 	╮(￣ω￣;)╭',
+                                          style: TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ))
                                     : Container(height: 0, width: 0),
                                 completedGoalsToDisplay.length == 0
                                     ? Container(height: 0, width: 0)
@@ -165,7 +170,9 @@ class CollagePageState extends State<CollagePage> {
                                     );
                                   },
                                 ),
-                                Padding(padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 10.0, bottom: 10.0)),
                                 incompleteGoalsToDisplay.length == 0
                                     ? Container(height: 0, width: 0)
                                     : Text(
@@ -197,7 +204,7 @@ class CollagePageState extends State<CollagePage> {
                                     );
                                   },
                                 ),
-                               /* incompleteGoalsToDisplay.length == 0
+                                /* incompleteGoalsToDisplay.length == 0
                                     ? Container(height: 0, width: 0)
                                     : Center(
                                         child: Text(
@@ -216,7 +223,7 @@ class CollagePageState extends State<CollagePage> {
                   return Center(child: CircularProgressIndicator());
                 }
               }),
-        )));
+        ));
   }
 }
 
@@ -272,7 +279,15 @@ class IncompleteGoalCard extends StatelessWidget {
                       'https://i.pinimg.com/originals/ec/6f/d9/ec6fd9522192b95eaba1318d79c9d6ae.jpg'),
                   Padding(padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
                   Text(
-                      this.goalComment == null ? "You didn't complete " + this.goalTitle + ' this week.' : "You didn't complete " + this.goalTitle + " this week due to " + this.goalComment + ".",
+                      this.goalComment == null
+                          ? "You didn't complete " +
+                              this.goalTitle +
+                              ' this week.'
+                          : "You didn't complete " +
+                              this.goalTitle +
+                              " this week due to " +
+                              this.goalComment +
+                              ".",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18.0))
                 ]))));

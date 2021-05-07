@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:motivateme_mobile_app/model/goal.dart';
-import 'package:day_picker/day_picker.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'service/goal_manager.dart';
@@ -33,7 +32,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     4: 'Thursday',
     5: 'Friday',
     6: 'Saturday'
-  }; 
+  };
 
   Map<String, bool> goalDays = {
     'Monday': false,
@@ -49,7 +48,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Goals Page'),
+        iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -86,6 +85,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 )
             ]
           ),
+<<<<<<< HEAD
           child: Center(
             child: Container(
                 child: Stack(children: [
@@ -119,22 +119,61 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
                             //side: BorderSide(width: 3, color: Colors.black),
+=======
+          child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Stack(children: [
+                SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Column(children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 30.0)),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 30.0),
+                      child: Text('New Goal',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: _autoValidate,
+                      child: _addGoalForm(),
+                    ),
+                    SizedBox(height: 40.0),
+                    SizedBox(
+                      width: 300.0,
+                      height: 40.0,
+                      child: OutlinedButton(
+                        child: new Text(
+                          'Add',
+                          style: new TextStyle(
+                              fontSize: 17.0, color: Colors.white),
+                        ),
+                        onPressed: _validateInputs,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).primaryColor),
+                          elevation: MaterialStateProperty.all<double>(10.0),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                            ),
+>>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ]),
-              ),
-            ])),
-          ),
+                  ]),
+                ),
+              ])),
         ),
       ),
     );
   }
 
   Widget _addGoalForm() {
-    final timeFormat = DateFormat("HH:mm");
+    final timeFormat = DateFormat("hh:mm a");
     final dateFormat = DateFormat("MM/dd/yyyy");
 
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -144,7 +183,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          hintText: 'New Goal',
+          hintText: 'Title',
           contentPadding:
               new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           border: OutlineInputBorder(
@@ -156,10 +195,20 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         padding: const EdgeInsets.all(10.0),
       ),
       Row(
+<<<<<<< HEAD
         children: [
           Flexible(child: Text("Start Date: ")),
           Expanded(
+=======
+        children: <Widget>[
+          Flexible(
+>>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
+              decoration: InputDecoration(
+                  labelText: "Start Date",
+                  // hintText: "End Date",
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0))),
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
                 final time = await showDatePicker(
@@ -174,9 +223,22 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               },
             ),
           ),
+<<<<<<< HEAD
           Flexible(child: Text("End Date: ")),
           Expanded(
+=======
+          SizedBox(
+            width: 20.0,
+          ),
+          Flexible(
+>>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
+              decoration: InputDecoration(
+                  labelText: "End Date",
+                  // hintText: "End Date",
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black, width: 10.0))),
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
                 final time = await showDatePicker(
@@ -191,7 +253,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 return time;
               },
             ),
-          )
+          ),
         ],
       ),
       Padding(
@@ -199,9 +261,18 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       ),
       Row(
         children: [
+<<<<<<< HEAD
           Flexible(child: Text("Start Time: ")),
           Expanded(
+=======
+          Flexible(
+>>>>>>> de5b111fdb07a8d89cdab7e0f73854ea0523ed6e
             child: DateTimeField(
+              decoration: InputDecoration(
+                  labelText: "Start Time",
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black, width: 10.0))),
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
                 final time = await showTimePicker(
@@ -216,9 +287,17 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               },
             ),
           ),
-          Flexible(child: Text("End Time: ")),
-          Expanded(
+          SizedBox(
+            width: 20.0,
+          ),
+          Flexible(
             child: DateTimeField(
+              decoration: InputDecoration(
+                  labelText: "End Time",
+                  // hintText: "End Date",
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black, width: 10.0))),
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
                 final time = await showTimePicker(
@@ -265,12 +344,16 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             this.goalDays[indexToDay[index]] = values[index];
           });
 
-          for(var thing in this.goalDays.entries) {
+          for (var thing in this.goalDays.entries) {
             print(thing.key + ' ' + thing.value.toString());
           }
-
         },
         values: values,
+        selectedFillColor: Theme.of(context).primaryColor,
+        selectedShape: RoundedRectangleBorder(),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(),
+        ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),

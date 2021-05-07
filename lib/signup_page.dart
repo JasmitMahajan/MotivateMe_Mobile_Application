@@ -24,74 +24,60 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Signup Page'),
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
-            )),
+        body: new GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment
+                .centerRight, // 10% of the width, so there are ten blinds.
+            colors: [
+              const Color(0xffB7F8DB),
+              const Color(0xff50A7C2)
+            ], // red to yellow
+            tileMode: TileMode.repeated, // repeats the gradient over the canvas
           ),
         ),
-        body: new GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
+        child: Center(
           child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment
-                    .centerRight, // 10% of the width, so there are ten blinds.
-                colors: [
-                  const Color(0xffB7F8DB),
-                  const Color(0xff50A7C2)
-                ], // red to yellow
-                tileMode:
-                    TileMode.repeated, // repeats the gradient over the canvas
-              ),
-            ),
-            child: Center(
-              child: Container(
-                  child: Stack(children: [
-                // Sign Up Form
-                SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
-                  child: Column(children: <Widget>[
-                    Form(
-                      key: _formKey,
-                      autovalidateMode: _autoValidate,
-                      child: _signUpForm(),
-                    ),
-                    SizedBox(height: 40.0),
-                    // Login Button
-                    new Container(
-                      alignment: Alignment.bottomCenter,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pop(
-                            context,
-                          );
-                        },
-                        child: new Text(
-                          'Already have an account? Login',
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                        ),
+              child: Stack(children: [
+            // Sign Up Form
+            SingleChildScrollView(
+              padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
+              child: Column(children: <Widget>[
+                Form(
+                  key: _formKey,
+                  autovalidateMode: _autoValidate,
+                  child: _signUpForm(),
+                ),
+                SizedBox(height: 40.0),
+                // Login Button
+                new Container(
+                  alignment: Alignment.bottomCenter,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(
+                        context,
+                      );
+                    },
+                    child: new Text(
+                      'Already have an account? Login',
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
                       ),
                     ),
-                  ]),
+                  ),
                 ),
-              ])),
+              ]),
             ),
-          ),
-        ));
+          ])),
+        ),
+      ),
+    ));
   }
 
   Widget _signUpForm() {
@@ -205,20 +191,16 @@ class _SignUpPageState extends State<SignUpPage> {
         child: OutlinedButton(
           child: new Text(
             'Sign Up',
-            style: new TextStyle(fontSize: 17.0, color: Colors.black),
+            style: new TextStyle(fontSize: 17.0, color: Colors.white),
           ),
           onPressed: _validateInputs,
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.tealAccent),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
             elevation: MaterialStateProperty.all<double>(10.0),
-            side: MaterialStateProperty.all<BorderSide>(
-              BorderSide(width: 3.0, color: Colors.black),
-            ),
             shape: MaterialStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32.0),
-                side: BorderSide(width: 3, color: Colors.black),
               ),
             ),
           ),
