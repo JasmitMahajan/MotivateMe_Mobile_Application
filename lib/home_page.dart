@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
 
                           if (now.isBefore(afternoon)) {
                             return Text(
-                                'Good Morning ' +
+                                'Good Morning, ' +
                                     firstName.first.value.toString() +
                                     '!',
                                 style: TextStyle(
@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                           } else if (now.isAfter(afternoon) &&
                               now.isBefore(evening)) {
                             return Text(
-                                'Good Afternoon ' +
+                                'Good Afternoon, ' +
                                     firstName.first.value.toString() +
                                     '!',
                                 style: TextStyle(
@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                           } else if (now.isAfter(evening) &&
                               now.isBefore(night)) {
                             return Text(
-                                'Good Evening ' +
+                                'Good Evening, ' +
                                     firstName.first.value.toString() +
                                     '!',
                                 style: TextStyle(
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                 ));
                           } else {
                             return Text(
-                                'Good Night ' +
+                                'Good Night, ' +
                                     firstName.first.value.toString() +
                                     '!',
                                 style: TextStyle(
