@@ -1,5 +1,4 @@
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -44,13 +43,20 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            primaryColor: Color(0xff5480c1)),
+            primaryColor: Color(0xff5480c1),
+            fontFamily: 'Montserrat'),
+
         // 2
         home: FutureBuilder(
           future: authService.checkUserSession(),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data == true) {
+                Amplify.Auth.fetchUserAttributes().then((value) {
+                  for (var attribute in value) {
+                    print(attribute.userAttributeKey + ' ' + attribute.value);
+                  }
+                });
                 return NavigationPage();
               } else {
                 return LoginPage();

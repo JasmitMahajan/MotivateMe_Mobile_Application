@@ -1,3 +1,5 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:motivateme_mobile_app/add_goals_page.dart';
 import 'package:motivateme_mobile_app/camera_page.dart';
@@ -24,9 +26,14 @@ class _HomePageState extends State<HomePage> {
 
   final GoalManager goalManager = GoalManager();
 
-  Future<void> removeSubGoal(List<SubGoal> subGoals, int index) async {
+  Future<void> removeSubGoal(
+      List<SubGoal> subGoals, int index, bool completed) async {
     Future.delayed(Duration(milliseconds: 500)).then((_) {
-      goalManager.markGoalAsComplete(subGoals.elementAt(index));
+      if (completed) {
+        goalManager.markGoalAsComplete(subGoals.elementAt(index));
+      } else {
+        goalManager.markGoalAsIncomplete(subGoals.elementAt(index));
+      }
     });
   }
 
@@ -37,9 +44,17 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => AddGoalsPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AddGoalsPage()))
+              .then((value) {
+            if (value == true) {
+              print("value is true");
+              setState(() {
+                print("set state");
+              });
+            }
+          });
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.lightGreen,
@@ -62,44 +77,211 @@ class _HomePageState extends State<HomePage> {
           physics: BouncingScrollPhysics(),
           child: Center(
               child: Column(children: [
+            Padding(padding: EdgeInsets.only(top: 55.0)),
+            FutureBuilder(
+                future: Amplify.Auth.fetchUserAttributes(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<AuthUserAttribute> firstName = snapshot.data
+                        .where((element) =>
+                            element.userAttributeKey == 'custom:first_name')
+                        .toList();
+
+                    DateTime now = DateTime.now();
+                    String currentMonth = DateTime.now().month.toString();
+                    String currentDay = DateTime.now().day.toString();
+
+                    if (int.parse(currentMonth) < 10) {
+                      currentMonth = '0' + DateTime.now().month.toString();
+                    }
+                    if (int.parse(currentDay) < 10) {
+                      currentDay = '0' + DateTime.now().day.toString();
+                    }
+
+                    String currentDate = DateTime.now().year.toString() +
+                        '-' +
+                        currentMonth +
+                        '-' +
+                        currentDay;
+
+                    DateTime afternoon =
+                        DateTime.parse(currentDate + ' 12:00:00');
+                    DateTime evening =
+                        DateTime.parse(currentDate + ' 17:00:00');
+                    DateTime night = DateTime.parse(currentDate + ' 20:00:00');
+
+                    if (firstName.isEmpty) {
+                      if (now.isBefore(afternoon)) {
+                        return Text('Good Morning!',
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            ));
+                      } else if (now.isAfter(afternoon) &&
+                          now.isBefore(evening)) {
+                        return Text('Good Afternoon!',
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            ));
+                      } else if (now.isAfter(evening) && now.isBefore(night)) {
+                        return Text('Good Evening!',
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            ));
+                      } else {
+                        return Text('Good Night!',
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            ));
+                      }
+                    }
+
+                    if (now.isBefore(afternoon)) {
+                      return Text(
+                          'Good Morning ' +
+                              firstName.first.value.toString() +
+                              '!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    } else if (now.isAfter(afternoon) &&
+                        now.isBefore(evening)) {
+                      return Text(
+                          'Good Afternoon ' +
+                              firstName.first.value.toString() +
+                              '!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    } else if (now.isAfter(evening) && now.isBefore(night)) {
+                      return Text(
+                          'Good Evening ' +
+                              firstName.first.value.toString() +
+                              '!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    } else {
+                      return Text(
+                          'Good Night ' +
+                              firstName.first.value.toString() +
+                              '!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    }
+                  } else {
+                    DateTime now = DateTime.now();
+                    String currentMonth = DateTime.now().month.toString();
+                    String currentDay = DateTime.now().day.toString();
+
+                    if (int.parse(currentMonth) < 10) {
+                      currentMonth = '0' + DateTime.now().month.toString();
+                    }
+                    if (int.parse(currentDay) < 10) {
+                      currentDay = '0' + DateTime.now().day.toString();
+                    }
+
+                    String currentDate = DateTime.now().year.toString() +
+                        '-' +
+                        currentMonth +
+                        '-' +
+                        currentDay;
+
+                    DateTime afternoon =
+                        DateTime.parse(currentDate + ' 12:00:00');
+                    DateTime evening =
+                        DateTime.parse(currentDate + ' 17:00:00');
+                    DateTime night = DateTime.parse(currentDate + ' 20:00:00');
+
+                    if (now.isBefore(afternoon)) {
+                      return Text('Good Morning!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    } else if (now.isAfter(afternoon) && now.isBefore(night)) {
+                      return Text('Good Afternoon!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    } else if (now.isAfter(evening) && now.isBefore(night)) {
+                      return Text(
+                        'Good Evening!',
+                        style: TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    } else {
+                      return Text('Good Night!',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ));
+                    }
+                  }
+                }),
             Container(
               padding: EdgeInsets.only(top: 10.0),
               alignment: Alignment.topCenter,
-              child: TextButton(
-                onPressed: () async {
-                  var url = await inspireMeService.inspireMe();
-                  return showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('AWS Test'),
-                          content:
-                              SingleChildScrollView(child: Image.network(url)),
-                          actions: [
-                            TextButton(
-                                child: Text('Very Nice'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                })
-                          ],
-                        );
-                      });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(35.0),
-                child: new Text(
-                  'Inspire Me',
-                  style: new TextStyle(fontSize: 16.0, color: Colors.black),
-                ),
-                ),
-              ),
+              child: OutlinedButton(
+                  onPressed: () async {
+                    var url = await inspireMeService.inspireMe();
+                    return showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('You are now... inspired'),
+                            content: SingleChildScrollView(
+                                child: Image.network(url)),
+                            actions: [
+                              TextButton(
+                                  child: Text('Back to work!',
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).primaryColor)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  })
+                            ],
+                          );
+                        });
+                  },
+                  child: new Text(
+                    'Inspire Me',
+                    style: new TextStyle(fontSize: 16.0, color: Colors.black),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xfff5855b)),
+                    elevation: MaterialStateProperty.all<double>(10.0),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                  )),
             ),
-            Padding(
-                  padding: const EdgeInsets.all(10.0),
-            ),
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            Text('Your goals for today!',
+                style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                )),
+            Padding(padding: EdgeInsets.only(bottom: 10.0)),
             FutureBuilder<List<SubGoal>>(
-                future: goalManager.retrieveSubGoalsForToday(),
+                future: Future.delayed(Duration(milliseconds: 500),
+                    goalManager.retrieveSubGoalsForToday),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<SubGoal>> snapshot) {
                   if (snapshot.hasData) {
@@ -113,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         print(index.toString() +
                             " " +
-                            subGoals.elementAt(index).hashCode.toString());
+                            subGoals.elementAt(index).startDate.toString());
                         return Dismissible(
                           child: SubGoalWidget(
                               subgoal: subGoals.elementAt(index),
@@ -121,20 +303,38 @@ class _HomePageState extends State<HomePage> {
                               description:
                                   subGoals.elementAt(index).description),
                           background: Container(
+                              height: 50,
+                              width: 50,
                               padding: EdgeInsets.only(left: 60.0),
                               alignment: Alignment.centerLeft,
                               color: Colors.green,
-                              child: Icon(Icons.check)),
-                          secondaryBackground:
-                              Container(color: Colors.red, child: Text("left")),
+                              child: Icon(Icons.check,
+                                  color: Colors.white, size: 50)),
+                          secondaryBackground: Container(
+                              height: 50,
+                              width: 50,
+                              padding: EdgeInsets.only(right: 60.0),
+                              alignment: Alignment.centerRight,
+                              color: Colors.red,
+                              child: Icon(Icons.clear,
+                                  color: Colors.white, size: 50)),
                           key: UniqueKey(),
-                          onDismissed: (DismissDirection direction) async {
-                            await removeSubGoal(subGoals, index);
+                          onDismissed: (DismissDirection direction) {
+                            var markedSubGoal = subGoals.elementAt(index);
+
                             if (direction == DismissDirection.startToEnd) {
-                              completedGoals();
+                              removeSubGoal(subGoals, index, true);
+                              setState(() {
+                                removeSubGoal(subGoals, index, true);
+                              });
+                              completedGoals(markedSubGoal);
                             }
                             if (direction == DismissDirection.endToStart) {
-                              incompleteGoals();
+                              removeSubGoal(subGoals, index, false);
+                              setState(() {
+                                removeSubGoal(subGoals, index, false);
+                              });
+                              incompleteGoals(markedSubGoal);
                             }
                           },
                         );
@@ -153,7 +353,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> completedGoals() async {
+  Future<void> completedGoals(SubGoal subGoal) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -169,7 +369,15 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => CameraPage()));
+                            builder: (BuildContext context) =>
+                                CameraPage(subGoal: subGoal))).then((value) {
+                      print('value: ' + value.toString());
+                      if (value == true) {
+                        print("value is true");
+                        Navigator.of(context).pop();
+                        setState(() {});
+                      } else {}
+                    });
                   },
                 ),
               ],
@@ -180,6 +388,7 @@ class _HomePageState extends State<HomePage> {
               child: Text('Skip'),
               onPressed: () {
                 Navigator.of(context).pop();
+                setState(() {});
               },
             ),
           ],
@@ -190,7 +399,7 @@ class _HomePageState extends State<HomePage> {
 
   String valueText;
   String codeDialog;
-  Future<void> incompleteGoals() async {
+  Future<void> incompleteGoals(SubGoal subGoal) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -237,6 +446,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   setState(() {
                     codeDialog = valueText;
+                    goalManager.setCommentForSubGoal(subGoal, codeDialog);
                     Navigator.pop(context);
                   });
                 },

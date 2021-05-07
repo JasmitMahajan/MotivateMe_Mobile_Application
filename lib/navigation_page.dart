@@ -24,6 +24,7 @@ class NavigationPageState extends State<NavigationPage> {
     setState(() {
       this._selectedIndex = index;
     });
+
   }
 
   @override

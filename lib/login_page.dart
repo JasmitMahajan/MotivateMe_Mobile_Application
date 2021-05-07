@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:motivateme_mobile_app/home_page.dart';
 import 'package:motivateme_mobile_app/navigation_page.dart';
 import 'service/inspire_me.dart';
 import 'signup_page.dart';
@@ -20,68 +19,73 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autoValidate = AutovalidateMode.disabled;
 
-
   @override
   Widget build(BuildContext context) {
-    // 2
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
-          )),
-        ),
-      ),
-      // 3
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment
-                .centerRight, // 10% of the width, so there are ten blinds.
-            colors: [
-              const Color(0xffB7F8DB),
-              const Color(0xff50A7C2)
-            ], // red to yellow
-            tileMode: TileMode.repeated, // repeats the gradient over the canvas
+        appBar: AppBar(
+          title: const Text('Login Page'),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
+            )),
           ),
         ),
-        child: Center(
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
           child: Container(
-              // 4
-              child: Stack(children: [
-            // Login form
-            Form(
-                key: _formKey,
-                autovalidateMode: _autoValidate,
-                child: _loginForm()),
-            // 6
-            // Sign Up Button
-            Container(
-                padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
-                alignment: Alignment.bottomCenter,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => SignUpPage()));
-                  },
-                  child: new Text(
-                    'Don\'t have an account? Sign up',
-                    style: new TextStyle(fontSize: 16.0, color: Colors.black),
-                  ),
-                ))
-          ])),
-        ),
-      ),
-    );
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment
+                    .centerRight, // 10% of the width, so there are ten blinds.
+                colors: [
+                  const Color(0xffB7F8DB),
+                  const Color(0xff50A7C2)
+                ], // red to yellow
+                tileMode:
+                    TileMode.repeated, // repeats the gradient over the canvas
+              ),
+            ),
+            child: Center(
+              child: Container(
+                  // 4
+                  child: Stack(children: [
+                // Login form
+                Form(
+                    key: _formKey,
+                    autovalidateMode: _autoValidate,
+                    child: _loginForm()),
+                // 6
+                // Sign Up Button
+                Container(
+                    padding: EdgeInsets.only(
+                        top: 50.0, left: 10.0, right: 10.0, bottom: 50.0),
+                    alignment: Alignment.bottomCenter,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SignUpPage()));
+                      },
+                      child: new Text(
+                        'Don\'t have an account? Sign up',
+                        style:
+                            new TextStyle(fontSize: 16.0, color: Colors.black),
+                      ),
+                    ))
+              ])),
+            ),
+          ),
+        ));
   }
 
   // 5

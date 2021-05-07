@@ -5,15 +5,21 @@ import 'package:motivateme_mobile_app/model/goal.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:weekday_selector/weekday_selector.dart';
+import 'model/subgoal.dart';
 import 'service/goal_manager.dart';
 
-class AddGoalsPage extends StatefulWidget {
-  AddGoalsPage({Key key}) : super(key: key);
+class EditGoalPage extends StatefulWidget {
+
+  final SubGoal subGoal;
+  final String title;
+  final String description;
+  EditGoalPage({Key key, this.subGoal, this.title, this.description})
+      : super(key: key);
   @override
-  State<StatefulWidget> createState() => _AddGoalsPageState();
+  State<StatefulWidget> createState() => _EditGoalPageState();
 }
 
-class _AddGoalsPageState extends State<AddGoalsPage> {
+class _EditGoalPageState extends State<EditGoalPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autoValidate = AutovalidateMode.disabled;
   final _goalTitleController = TextEditingController();
@@ -25,15 +31,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
 
   final goalManager = GoalManager();
   final values = List.filled(7, false);
-  final Map<int, String> indexToDay = {
-    0: 'Sunday',
-    1: 'Monday',
-    2: 'Tuesday',
-    3: 'Wednesday',
-    4: 'Thursday',
-    5: 'Friday',
-    6: 'Saturday'
-  }; 
 
   Map<String, bool> goalDays = {
     'Monday': false,
@@ -49,7 +46,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Goals Page'),
+        title: const Text('Edit Goal'),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -77,14 +74,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               tileMode:
                   TileMode.repeated, // repeats the gradient over the canvas
             ),
-            boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.9),
-                  spreadRadius: 4,
-                  blurRadius: 10,
-                  offset: Offset(0, 3),
-                )
-            ]
           ),
           child: Center(
             child: Container(
@@ -95,7 +84,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                   Form(
                     key: _formKey,
                     autovalidateMode: _autoValidate,
-                    child: _addGoalForm(),
+                    child: _editGoalForm(),
                   ),
                   SizedBox(height: 40.0),
                   SizedBox(
@@ -103,7 +92,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                     height: 40.0,
                     child: OutlinedButton(
                       child: new Text(
-                        'Add',
+                        'Save',
                         style:
                             new TextStyle(fontSize: 17.0, color: Colors.black),
                       ),
@@ -112,13 +101,13 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.tealAccent),
                         elevation: MaterialStateProperty.all<double>(10.0),
-                        //side: MaterialStateProperty.all<BorderSide>(
-                          //BorderSide(width: 3.0, color: Colors.black),
-                        //),
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(width: 3.0, color: Colors.black),
+                        ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
-                            //side: BorderSide(width: 3, color: Colors.black),
+                            side: BorderSide(width: 3, color: Colors.black),
                           ),
                         ),
                       ),
@@ -133,10 +122,10 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     );
   }
 
-  Widget _addGoalForm() {
+
+  Widget _editGoalForm() {
     final timeFormat = DateFormat("HH:mm");
     final dateFormat = DateFormat("MM/dd/yyyy");
-
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       TextFormField(
         validator: validateGoalTitle,
@@ -158,7 +147,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       Row(
         children: [
           Flexible(child: Text("Start Date: ")),
-          Expanded(
+          Flexible(
             child: DateTimeField(
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
@@ -175,7 +164,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             ),
           ),
           Flexible(child: Text("End Date: ")),
-          Expanded(
+          Flexible(
             child: DateTimeField(
               format: dateFormat,
               onShowPicker: (context, currentValue) async {
@@ -200,7 +189,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       Row(
         children: [
           Flexible(child: Text("Start Time: ")),
-          Expanded(
+          Flexible(
             child: DateTimeField(
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
@@ -217,7 +206,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             ),
           ),
           Flexible(child: Text("End Time: ")),
-          Expanded(
+          Flexible(
             child: DateTimeField(
               format: timeFormat,
               onShowPicker: (context, currentValue) async {
@@ -262,13 +251,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             // else before you actually flip the value,
             // it's up to your app's needs.
             values[index] = !values[index];
-            this.goalDays[indexToDay[index]] = values[index];
           });
-
-          for(var thing in this.goalDays.entries) {
-            print(thing.key + ' ' + thing.value.toString());
-          }
-
         },
         values: values,
       ),
@@ -298,17 +281,12 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     ]);
   }
 
-  void _validateInputs() async {
+  void _validateInputs() {
     if (_formKey.currentState.validate()) {
-      var goalTitles = await goalManager.retrieveGoalTitles();
-      if (goalTitles.contains(_goalTitleController.text)) {
-        _goalExistsDialog();
-        return;
-      }
-
       for (var entry in goalDays.entries) {
         if (entry.value == true) {
           _addGoal();
+          //TODO refresh home page
           Navigator.pop(context, true);
           return;
         }
@@ -367,33 +345,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             child: ListBody(
               children: <Widget>[
                 Text('Please select a day'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _goalExistsDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Goal with that title already exists'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Please choose a different name for your goal'),
               ],
             ),
           ),

@@ -24,70 +24,74 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Signup Page'),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
-          )),
-        ),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment
-                .centerRight, // 10% of the width, so there are ten blinds.
-            colors: [
-              const Color(0xffB7F8DB),
-              const Color(0xff50A7C2)
-            ], // red to yellow
-            tileMode: TileMode.repeated, // repeats the gradient over the canvas
+        appBar: AppBar(
+          title: const Text('Signup Page'),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [const Color(0xffB7F8DB), const Color(0xff50A7C2)],
+            )),
           ),
         ),
-        child: Center(
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
           child: Container(
-              child: Stack(children: [
-            // Sign Up Form
-            SingleChildScrollView(
-              padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
-              child: Column(children: <Widget>[
-                Form(
-                  key: _formKey,
-                  autovalidateMode: _autoValidate,
-                  child: _signUpForm(),
-                ),
-                SizedBox(height: 40.0),
-                // Login Button
-                new Container(
-                  alignment: Alignment.bottomCenter,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(
-                        context,
-                      );
-
-                    },
-                    child: new Text(
-                      'Already have an account? Login',
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment
+                    .centerRight, // 10% of the width, so there are ten blinds.
+                colors: [
+                  const Color(0xffB7F8DB),
+                  const Color(0xff50A7C2)
+                ], // red to yellow
+                tileMode:
+                    TileMode.repeated, // repeats the gradient over the canvas
+              ),
+            ),
+            child: Center(
+              child: Container(
+                  child: Stack(children: [
+                // Sign Up Form
+                SingleChildScrollView(
+                  padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
+                  child: Column(children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: _autoValidate,
+                      child: _signUpForm(),
+                    ),
+                    SizedBox(height: 40.0),
+                    // Login Button
+                    new Container(
+                      alignment: Alignment.bottomCenter,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(
+                            context,
+                          );
+                        },
+                        child: new Text(
+                          'Already have an account? Login',
+                          style: new TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ]),
                 ),
-              ]),
+              ])),
             ),
-          ])),
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   Widget _signUpForm() {
@@ -284,11 +288,14 @@ class _SignUpPageState extends State<SignUpPage> {
     print('username: $username');
     print('password: $password');
 
-    SignUpResult result = await authService.signUp(username, password, email, firstName, lastName);
+    SignUpResult result = await authService.signUp(
+        username, password, email, firstName, lastName);
     if (result == SignUpResult.SUCCESS) {
       await authService.login(username, password);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => NavigationPage()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => NavigationPage()));
     } else {
       _showMyDialog();
     }
