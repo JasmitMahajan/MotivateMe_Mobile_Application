@@ -340,7 +340,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         return;
       }
 
-      /*
       for (var entry in goalDays.entries) {
         if (entry.value == true) {
           _addGoal();
@@ -348,7 +347,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
           return;
         }
       }
-      _showMyDialog(); */
+      _showMyDialog(); 
     } else {
       setState(() {
         _autoValidate = AutovalidateMode.onUserInteraction;
